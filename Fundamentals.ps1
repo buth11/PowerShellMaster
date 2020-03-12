@@ -1,4 +1,3 @@
-#test
 Get-ChildItem | Sort-Object -Descending  -Property LastWriteTime #list objects from actual directory
 Clear-Host
 Get-ChildItem | ForEach-Object {"$($_.GetType().fullname) - $_.name"}
