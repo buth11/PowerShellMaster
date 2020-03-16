@@ -8,4 +8,5 @@ ctrl F (F3)         Find (Find Next)
 F9                  Toggle breakpoint
 F5                  Start/Continue code
 F11 (Shift F11)     Step Into (Step Out)
+F10                 Step Over
 Shift F5            Stop
