@@ -1,4 +1,5 @@
 <#
+https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7
 Comment a Block of code
 test 1234
 .SYNOPSIS
@@ -59,3 +60,28 @@ catch {
 if ($lookinggood) {
     Write-Output "faild fo $compName"
 }
+
+<# Module
+Saving file as .psm1 makes it a PowerShell Script Module
+Saving it in Documents\WindowsPowerShell\Modules\<Foldername same as psm1 file>\module.psm1
+$env:PSModulePath
+#>
+
+<# Functions
+Function can be called from elswere in the code
+can accept input and output data
+paramiters can use $args or named paramiters
+there is default $input for all data sent to it
+anything sent to output is returned from function (NOT write-host)
+
+EXAMPLE:
+function first3 {$input | select-object -First 3}
+get-process | first3
+
+#>
+
+#Code signing
+$cert = @(gci cert:\currentuser\my -codesigning)[0]
+Set-AuthenticodeSignature signme.ps1 $cert
+
+
