@@ -100,3 +100,72 @@ Invoke-Command -ComputerName savazuusscdc01 -ScriptBlock $ScriptBlockContent -Ar
 Invoke-Command -ComputerName savazuusscdc01 -ScriptBlock {Write-Output $args} -ArgumentList $message
 
 Invoke-Command -ComputerName savazuusscdc01 -ScriptBlock {Write-Host $using:message}
+
+
+#Hash Tables: Name --> Value
+$favthings = @{"Julie"="Sushi";"Ben"="Trains";"Abby"="Princess";"Kevin"="Minecraft"}
+$favthings.Add("John","Crab Cakes")
+$favthings.Set_Item("John","Steak")
+$favthings.Get_Item("Abby") # Princess
+
+#Custom objects 'PSObject'
+$cusobj = New-Object PSObject
+Add-Member -InputObject $cusobj -MemberType NoteProperty `
+    -Name greeting -Value "Hello"
+<#
+greeting
+--------
+Hello
+#>
+
+$favthings = @{"Julie"="Sushi";"Ben"="Trains";"Abby"="Princess";"Kevin"="Minecraft"}
+#Create New-Object from Hash Table
+$favobj = New-Object PSObject -Property $favthings
+<# $favobj
+Ben   : Trains
+Abby  : Princess
+Kevin : Minecraft
+Julie : Sushi
+John  : Steak
+
+$favobj | ft
+Ben    Abby     Kevin     Julie John
+---    ----     -----     ----- ----
+Trains Princess Minecraft Sushi Steak
+#>
+
+#In PowerShell v3 can skip a step
+$favobj2 = [PSCustomObject]@{"Julie"="Sushi";"Ben"="Trains";"Abby"="Princess";"Kevin"="Minecraft"}
+
+
+#Foreach "%", after pipieline is alias of ForEach-Object
+$names = @("Julie","Abby","Ben","Kevin") #Array $names[0] - first item
+$names | ForEach-Object -Process { Write-Output $_}
+$names | ForEach -Process { Write-Output $_}
+$names | ForEach { Write-Output $_}
+$names | % { Write-Output $_}
+    <#
+        Julie
+        Abby
+        Ben
+        Kevin
+    #>
+
+#Foreach vs Foreach-Object
+ForEach-Object -InputObject (1..100) { #Or ('Z'..'A')
+    $_
+} | Measure-Object
+
+#Pipieline filed
+ForEach ($num in (1..100)) {
+    $num
+} | Measure-Object
+
+
+#Accessing property values
+$samacctname = "John"
+Get-ADUser $samacctname  -Properties mail
+Get-ADUser $samacctname  -Properties mail | select-object mail
+Get-ADUser $samacctname  -Properties mail | select-object mail | get-member
+Get-ADUser $samacctname  -Properties mail | select-object -ExpandProperty mail | get-member
+Get-ADUser $samacctname  -Properties mail | select-object -ExpandProperty mail
